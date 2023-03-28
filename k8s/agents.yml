@@ -30,7 +30,14 @@ spec:
                 key: AZP_TOKEN
         image: jmhhcontainerregistry.azurecr.io/linux-agents:latest
         imagePullPolicy: Always
+        volumeMounts:
+          - mountPath: /var/run/docker.sock
+            name: localDockerSock    
         resources:
           limits:
             memory: "1Gi"
             cpu: "500m"        
+      volumes:
+        - name: localDockerSock
+          hostPath:
+            path: /var/run/docker.sock
