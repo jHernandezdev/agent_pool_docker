@@ -33,7 +33,6 @@ spec:
         volumeMounts:
           - mountPath: /var/run/docker.sock
             name: local-docker-sock
-            type: Socket
         resources:
           limits:
             memory: "1Gi"
