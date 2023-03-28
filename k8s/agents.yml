@@ -32,12 +32,12 @@ spec:
         imagePullPolicy: Always
         volumeMounts:
           - mountPath: /var/run/docker.sock
-            name: localDockerSock    
+            name: local-docker-sock    
         resources:
           limits:
             memory: "1Gi"
             cpu: "500m"        
       volumes:
-        - name: localDockerSock
+        - name: local-docker-sock
           hostPath:
             path: /var/run/docker.sock
