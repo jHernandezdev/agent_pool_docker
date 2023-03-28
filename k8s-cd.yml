@@ -8,10 +8,10 @@ trigger:
 
 stages:
   - stage: CD
-    displayname: Deploy to K8S Agents
+    displayName: Deploy to K8S Agents
     jobs:
     - deployment: K8S
-      displayname: Deploy to K8S Agents
+      displayName: Deploy to K8S Agents
       condition: ne(variables['Build.SourceBranchName'], 'main')
       pool:
           vmImage: 'ubuntu-latest'
