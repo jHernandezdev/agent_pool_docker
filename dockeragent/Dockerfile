@@ -1,8 +1,10 @@
-FROM ubuntu:20.04
+FROM ubuntu:latest
+
 RUN DEBIAN_FRONTEND=noninteractive apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
+    sudo \
     apt-transport-https \
     apt-utils \
     ca-certificates \
@@ -12,10 +14,18 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommend
     iputils-ping \
     jq \
     lsb-release \
-    software-properties-common 
+    software-properties-common \ 
+    ca-certificates \
+    curl \
+    gnupg
 
-RUN DEBIAN_FRONTEND=noninteractive curl -fsSL https://get.docker.com -o get-docker.sh && \
-        sh get-docker.sh
+RUN DEBIAN_FRONTEND=noninteractive sudo mkdir -m 0755 -p /etc/apt/keyrings
+RUN DEBIAN_FRONTEND=noninteractive curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+RUN DEBIAN_FRONTEND=noninteractive echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+          "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+          sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+RUN DEBIAN_FRONTEND=noninteractive sudo apt-get update
+RUN DEBIAN_FRONTEND=noninteractive sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 RUN DEBIAN_FRONTEND=noninteractive mkdir /opt/dotnet && \
         cd /opt/dotnet && \
@@ -23,9 +33,6 @@ RUN DEBIAN_FRONTEND=noninteractive mkdir /opt/dotnet && \
         tar -xf dotnet-sdk-6.0.100-linux-x64.tar.gz && \        
         rm -rf dotnet-sdk-6.0.100-linux-x64.tar.gz
 ENV PATH="$PATH:/opt/dotnet"
-
-RUN DEBIAN_FRONTEND=noninteractive curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
-        chmod +x /usr/local/bin/docker-compose
 
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
