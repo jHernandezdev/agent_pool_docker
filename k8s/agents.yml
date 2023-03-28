@@ -12,7 +12,7 @@ spec:
         app: linux-agents-pool        
     spec:
       imagePullSecrets:
-      - name: drnacr-key
+      - name: jmhhacr-key
 
       containers:
       - name: linux-agent
