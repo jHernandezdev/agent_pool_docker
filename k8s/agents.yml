@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: linux-agents-pool
 spec:
+  replicas: 3
   selector:
     matchLabels:
       app: linux-agents-pool
