@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linux-agents-pool
+spec:
+  selector:
+    matchLabels:
+      app: linux-agents-pool
+  template:
+    metadata:
+      labels:
+        app: linux-agents-pool        
+    spec:
+      imagePullSecrets:
+      - name: drnacr-key
+
+      containers:
+      - name: linux-agent
+        env:
+          - name: "AZP_URL"
+            valueFrom:
+              configMapKeyRef:              
+                name: agentenvironmentvariables              
+                key: AZP_URL
+          - name: "AZP_TOKEN"
+            valueFrom:
+              configMapKeyRef:              
+                name: agentenvironmentvariables              
+                key: AZP_TOKEN
+        image: jmhhcontainerregistry.azurecr.io/linux-agents:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "500m"        

@@ -1,0 +1,40 @@
+trigger:
+  branches:
+   include:     
+     - main
+  paths:
+    include:
+    - k8s
+
+stages:
+  - stage: CD
+    displayname: Deploy to K8S Agents
+    jobs:
+    - deployment: K8S
+      displayname: Deploy to K8S Agents
+      condition: ne(variables['Build.SourceBranchName'], 'main')
+      pool:
+          vmImage: 'ubuntu-latest'
+      environment: Linux-Agents-Pool.default
+      variables:
+      - group: agents_pools_env
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - checkout: self        
+              - task: Kubernetes@1
+                displayName: Creacion del ConfigMap
+                inputs:                  
+                  forceUpdateConfigMap: true
+                  configMapName: agentenvironmentvariables
+                  configMapArguments: 
+                    --from-literal=AZP_URL="$(AZP_URL)" 
+                    --from-literal=AZP_TOKEN="$(AZP_TOKEN)"                     
+              - task: KubernetesManifest@0
+                displayName: Creacion del deployment y service
+                inputs:
+                  action: deploy
+                  manifests: ./k8s/agents.yml
+                  containers: jmhhcontainerregistry.azurecr.io/pedidosweb:latest
+      
