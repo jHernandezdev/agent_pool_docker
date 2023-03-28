@@ -8,10 +8,10 @@ trigger:
 
 stages:
   - stage: CI
-    displayname: Build-Push de la imagen
+    displayName: Build-Push de la imagen
     jobs:
     - job: Docker
-      displayname: Build and push image
+      displayName: Build and push image
       pool: 
         vmImage: ubuntu-latest
       steps:
@@ -19,7 +19,7 @@ stages:
           displayName: Build image
           inputs:
             command: build
-            containerRegistry: 'jmhhcontainerregistry'
+            containerRegistry: 'Jmhh-Production-Acr'
             repository: 'linux-agents'
             Dockerfile: 'dockeragent/Dockerfile'
             buildContext: 'dockeragent/'
@@ -30,7 +30,7 @@ stages:
         - task: Docker@2
           displayName: Push image
           inputs:
-            containerRegistry: 'jmhhcontainerregistry'
+            containerRegistry: 'Jmhh-Production-Acr'
             repository: 'linux-agents'
             command: push
             tags: |
