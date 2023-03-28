@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        app: linux-agents-pool        
+        app: linux-agents-pool
     spec:
       imagePullSecrets:
       - name: jmhhacr-key
@@ -20,24 +20,26 @@ spec:
         env:
           - name: "AZP_URL"
             valueFrom:
-              configMapKeyRef:              
-                name: agentenvironmentvariables              
+              configMapKeyRef:
+                name: agentenvironmentvariables
                 key: AZP_URL
           - name: "AZP_TOKEN"
             valueFrom:
-              configMapKeyRef:              
-                name: agentenvironmentvariables              
+              configMapKeyRef:
+                name: agentenvironmentvariables
                 key: AZP_TOKEN
         image: jmhhcontainerregistry.azurecr.io/linux-agents:latest
         imagePullPolicy: Always
         volumeMounts:
           - mountPath: /var/run/docker.sock
-            name: local-docker-sock    
+            name: local-docker-sock
+            type: Socket
         resources:
           limits:
             memory: "1Gi"
-            cpu: "500m"        
+            cpu: "500m"
       volumes:
         - name: local-docker-sock
           hostPath:
             path: /var/run/docker.sock
+            type: Socket
