@@ -12,7 +12,7 @@ stages:
     jobs:
     - deployment: K8S
       displayName: Deploy to K8S Agents
-      condition: ne(variables['Build.SourceBranchName'], 'main')
+      condition: eq(variables['Build.SourceBranchName'], 'main')
       pool:
           vmImage: 'ubuntu-latest'
       environment: Linux-Agents-Pool.default
