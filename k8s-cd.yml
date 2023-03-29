@@ -15,7 +15,7 @@ stages:
       condition: eq(variables['Build.SourceBranchName'], 'main')
       pool:
           vmImage: 'ubuntu-latest'
-      environment: Linux-Agents-Pool.default
+      environment: Linux-Agents-Pool
       variables:
       - group: agents_pools_env
       strategy:
