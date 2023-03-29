@@ -19,8 +19,8 @@ stages:
       variables:
       - group: agents_pools_env
       strategy:
-        rolling:
-          maxParallel: 1  #for percentages, mention as x%
+        canary:          
+          increments: [10,20]  
           preDeploy:
             steps:            
             - script: echo initialize, cleanup, backup, install certs
@@ -40,10 +40,7 @@ stages:
                 inputs:
                   action: deploy
                   manifests: ./k8s/agents.yml
-                  containers: jmhhcontainerregistry.azurecr.io/pedidosweb:latest
-          routeTraffic:
-            steps:
-            - script: echo routing traffic
+                  containers: jmhhcontainerregistry.azurecr.io/pedidosweb:latest          
           postRouteTraffic:
             steps:
             - script: echo health check post-route traffic
