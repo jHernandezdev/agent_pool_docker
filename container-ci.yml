@@ -8,7 +8,7 @@ trigger:
 
 stages:
   - stage: CI
-    displayName: Build-Push de la imagen
+    displayName: Build-Push de la Imagen
     jobs:
     - job: Docker
       displayName: Build and push Image
