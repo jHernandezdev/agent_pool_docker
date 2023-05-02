@@ -8,7 +8,7 @@ trigger:
 
 stages:
   - stage: CD
-    displayName: Deploy to K8S agents
+    displayName: Deploy to K8S A  gents
     jobs:
     - deployment: K8S
       displayName: Deploy to K8S Agents
