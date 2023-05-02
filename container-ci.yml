@@ -11,7 +11,7 @@ stages:
     displayName: Build-Push de la imagen
     jobs:
     - job: Docker
-      displayName: Build and push image
+      displayName: Build and push Image
       pool: 
         vmImage: ubuntu-latest
       steps:
